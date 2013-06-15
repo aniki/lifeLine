@@ -28,12 +28,9 @@
 }
 
 #player1 {
-    bottom: 50%;
-    /*transform: rotate(180deg);*/
 }
 
 #player2 {
-    top: 50%;
     background: black;
 }
 
@@ -127,4 +124,15 @@
 }
 .edit .mana {
     font-size: 48px;
+}
+.edit .mana li {
+    opacity: 0.5;
+}
+.edit .mana li a {
+}
+.edit .mana .selected {
+    opacity: 1;
+}
+.edit .mana .selected a {
+    color: white;
 }

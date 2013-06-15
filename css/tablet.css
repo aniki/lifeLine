@@ -1,0 +1,15 @@
+@media screen and (min-width: 321px) {
+
+    /* Plane Layout */
+    #player1 {
+        bottom: 50%;
+        -webkit-transform: rotate(180deg);
+        transform: rotate(180deg);
+
+    }
+    #player2 {
+        top: 50%;
+        bottom: 0;
+    }
+
+}
