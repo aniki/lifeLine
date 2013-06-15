@@ -1,0 +1,46 @@
+@media screen and (max-width: 320px) {
+
+    /* Plane Layout */
+    #player1 {
+        bottom: 0;
+    }
+    #player1 {
+        bottom: 0;
+    }
+
+    #player2 {
+        display: none;
+    }
+
+
+    /* UI */
+    .dashboard header {
+        padding: 15px 20px;
+        font-size: 48px;
+        line-height: 48px;
+    }
+    .dashboard header .label {
+        width: 100%;
+        font-weight: bold;
+    }
+    .dashboard header .name {
+        display: block;
+        font-weight: normal;
+        width: 75%;
+    }
+    .dashboard header .colors {
+        width: 45%;
+        margin-right: -10px;
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        line-height: 48px;
+    }
+    .dashboard header .colors li {
+    }
+
+    .dashboard .count {
+        top: 180px;
+    }
+
+}
