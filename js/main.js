@@ -27,6 +27,7 @@ $(document).ready(function(){
             setElements: function() {
                 this.$dashboardPanel = this.el.find('.dashboard');
                 this.$editPanel = this.el.find('.edit');
+                this.$togglePanels = this.el.find('.toggle');
                 this.$colorSelector = this.el.find('.edit .mana li');
                 this.$nameLabel = this.el.find('.dashboard header .label');
             },
@@ -34,7 +35,8 @@ $(document).ready(function(){
             setEvents: function() {
                 var _this = this;
 
-                this.$nameLabel.on('click', function(e){
+                this.$togglePanels.on('click', function(e){
+                    e.preventDefault();
                     _this.$editPanel.toggle();
                     _this.$dashboardPanel.toggle();
                 });
@@ -82,6 +84,7 @@ $(document).ready(function(){
 
                 if (this.colors.length == 0) {
                     cssValue = this.initialBackgroundCssValue;
+                    this.el.toggleClass('initial');
                 } else if (this.colors.length == 1) {
                     var color = this.getColorHexaByName(this.colors[0]);
                     cssValue += color + ' 0%,' + this.getColorLuminance(color, this.options.hue)+ ' 100%)';
@@ -98,8 +101,8 @@ $(document).ready(function(){
                     cssValue += ')';
 
                 }
-                console.log(cssValue);
                 this.el.css('background', cssValue);
+                
             },
 
             getColorLuminance: function(hex, lum) {
