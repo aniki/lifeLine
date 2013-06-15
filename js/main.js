@@ -23,17 +23,23 @@ $(document).ready(function(){
         },
 
         setElements: function() {
+            this.$editPanel = this.el.find('.edit');
             this.$colorSelector = this.el.find('.edit .mana li');
+            this.$nameLabel = this.el.find('.dashboard header .label');
         },
 
         setEvents: function() {
             var _this = this;
 
+            this.$nameLabel.on('click', function(e){
+                _this.$editPanel.toggle();
+            });
+
             this.$colorSelector.on('click', function(e){
                 var color = $(e.target).data('color');
                 _this.selectColor(color);
                 _this.setBackgroundColors()
-            })
+            });
         },
 
         selectColor: function(color) {
@@ -68,7 +74,7 @@ $(document).ready(function(){
                 cssValue = '';
             }
 
-            this.el.css('background', cssValue)
+            this.el.css('background', cssValue);
         },
 
         getColorLuminance: function(hex, lum) {
