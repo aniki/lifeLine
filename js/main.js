@@ -26,27 +26,70 @@ $(document).ready(function(){
 
             setElements: function() {
                 this.$dashboardPanel = this.el.find('.dashboard');
+                this.$dashboardMana = this.$dashboardPanel.find('.mana');
                 this.$editPanel = this.el.find('.edit');
+                this.$editPanelCloseButton = this.el.find('.edit a.toggle');
                 this.$togglePanels = this.el.find('.toggle');
                 this.$colorSelector = this.el.find('.edit .mana li');
                 this.$nameLabel = this.el.find('.dashboard header .label');
+                this.$counter = this.el.find('.count .number');
             },
 
             setEvents: function() {
                 var _this = this;
 
-                this.$togglePanels.on('click', function(e){
+                this.$togglePanels.on('touchstart', function(e){
+                    e.stopPropagation();
                     e.preventDefault();
+
                     _this.$editPanel.toggle();
                     _this.$dashboardPanel.toggle();
                 });
+                this.$colorSelector.on('touchstart', function(e){
+                    event.stopPropagation();
+                    e.preventDefault();
 
-                this.$colorSelector.on('click', function(e){
                     var color = $(e.target).data('color');
                     $(this).toggleClass('selected');
                     _this.selectColor(color);
                     _this.setBackgroundColors()
                 });
+
+                this.el.find('.count').on('touchmove', function(e){
+                    var xpos = e.originalEvent.touches[0].pageX,
+                        direction = "";
+
+                    if (xpos - this.xpos > 0) {
+                        direction = "right";
+                    } else {
+                        direction = "left";
+                    }
+
+                    _this.updateCounter(direction);
+
+                    this.xpos = xpos;
+
+                }).on('touchstart', function(e){
+                    var xpos = e.originalEvent.touches[0].pageX;
+                    var width = $(this).width();
+
+                        if (xpos < (width / 2)) {
+                            _this.updateCounter("left");
+                        } else {
+                            _this.updateCounter("right");
+                        }
+                });
+            },
+
+            updateCounter: function(direction) {
+                    switch (direction) {
+                        case "left":
+                            this.$counter.text(parseInt(this.$counter.text()) - 1);
+                            break;
+                        case "right":
+                            this.$counter.text(parseInt(this.$counter.text()) + 1);
+                            break;
+                    }
             },
 
             selectColor: function(color) {
@@ -64,12 +107,15 @@ $(document).ready(function(){
                 // toggle value in colors array
                 if (registered == true) {
                     this.colors.remove(id);
+                    this.$dashboardMana.find('.' + color).hide();
                 } else {
                     this.colors.push(color);
+                    this.$dashboardMana.find('.' + color).show();
                 }
 
                 // sort array by name
                 this.colors.sort();
+
             },
 
             getColorHexaByName: function(colorName) {
@@ -102,7 +148,7 @@ $(document).ready(function(){
 
                 }
                 this.el.css('background', cssValue);
-                
+
             },
 
             getColorLuminance: function(hex, lum) {

@@ -23,6 +23,9 @@
         width: 100%;
         font-weight: bold;
     }
+    .dashboard header .label .number {
+        display: none;
+    }
     .dashboard header .name {
         display: block;
         font-weight: normal;
@@ -40,7 +43,7 @@
     }
 
     .dashboard .count {
-        top: 180px;
+        top: 150px;
     }
 
 }

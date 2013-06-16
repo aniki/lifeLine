@@ -97,6 +97,9 @@
 .dashboard header .colors li {
     float: right;
 }
+.dashboard .mana li {
+    display: none;
+}
 
 .dashboard .count {
     position: absolute;
@@ -128,13 +131,12 @@
 }
 .edit .mana li {
     opacity: 0.5;
-}
-.edit .mana li a {
+    color: black;
 }
 .edit .mana .selected {
     opacity: 1;
 }
-.edit .mana .selected a {
+.edit .mana .selected {
     color: white;
 }
 
