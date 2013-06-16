@@ -12,7 +12,7 @@ $(document).ready(function(){
 
         this.app = {
                 options: {
-                hue : "0.2"
+                hue : "1.5"
             },
 
             init: function() {
@@ -144,7 +144,6 @@ $(document).ready(function(){
                         }
                     }
                     cssValue += ')';
-
                 }
 
                 if (this.colors.length > 0) {
