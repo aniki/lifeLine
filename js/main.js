@@ -1,11 +1,11 @@
 $(document).ready(function(){
 
     var colorScheme = {
-        white : "ffeeaa",
-        blue : "157dde",
-        black : "222222",
-        red : "c91800",
-        green : "318428"
+        white : "dacf9a",
+        blue : "3a81b2",
+        black : "201f1f",
+        red : "ab4445",
+        green : "50a36d"
     }
 
     var plane = function (element, options) {
