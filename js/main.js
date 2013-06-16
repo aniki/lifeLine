@@ -28,7 +28,6 @@ $(document).ready(function(){
                 this.$dashboardPanel = this.el.find('.dashboard');
                 this.$dashboardMana = this.$dashboardPanel.find('.mana');
                 this.$editPanel = this.el.find('.edit');
-                this.$editPanelCloseButton = this.el.find('.edit a.toggle');
                 this.$togglePanels = this.el.find('.toggle');
                 this.$colorSelector = this.el.find('.edit .mana li');
                 this.$nameLabel = this.el.find('.dashboard header .label');
@@ -52,7 +51,7 @@ $(document).ready(function(){
                     var color = $(e.target).data('color');
                     $(this).toggleClass('selected');
                     _this.selectColor(color);
-                    _this.setBackgroundColors()
+                    _this.setColors();
                 });
 
                 this.el.find('.count').on('touchmove', function(e){
@@ -123,7 +122,7 @@ $(document).ready(function(){
                 return colorHexa;
             },
 
-            setBackgroundColors: function() {
+            setColors: function() {
                 var cssParams = [],
                     i = 0,
                     cssValue = '-webkit-linear-gradient(-45deg, ';
@@ -147,6 +146,13 @@ $(document).ready(function(){
                     cssValue += ')';
 
                 }
+
+                if (this.colors.length > 0) {
+                    this.el.addClass('withColors');
+                } else {
+                    this.el.removeClass('withColors');
+                }
+
                 this.el.css('background', cssValue);
 
             },
