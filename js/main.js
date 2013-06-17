@@ -11,13 +11,16 @@ $(document).ready(function(){
     var plane = function (element, options) {
 
         this.app = {
-                options: {
-                hue : "1.5"
+            options: {
+                hue : "1.5",
+                counter : 20,
+                fps : 15
             },
 
             init: function() {
                 this.el = $(element);
                 this.colors = [];
+                this.counter = this.options.counter;
                 this.initialBackgroundCssValue = this.el.css('background');
 
                 this.setElements();
@@ -28,6 +31,7 @@ $(document).ready(function(){
                 this.$dashboardPanel = this.el.find('.dashboard');
                 this.$dashboardMana = this.$dashboardPanel.find('.mana');
                 this.$editPanel = this.el.find('.edit');
+                this.$editNameInput = this.el.find('.edit input');
                 this.$togglePanels = this.el.find('.toggle');
                 this.$colorSelector = this.el.find('.edit .mana li');
                 this.$nameLabel = this.el.find('.dashboard header .label');
@@ -36,7 +40,82 @@ $(document).ready(function(){
 
             setEvents: function() {
                 var _this = this;
+                var didSwipe = false,
+                    swipeDirection = ""
 
+                document.ontouchmove = function(event) {
+                    event.preventDefault();
+                }
+
+                // event management with Hammer.js
+                var eventManager = this.el.hammer();
+
+                // edit mode toggle
+                eventManager.on('tap', '.toggle', function(e){
+                    e.preventDefault();
+                    _this.$editPanel.toggle();
+                    _this.$dashboardPanel.toggle();
+                    e.stopPropagation();
+                });
+
+                // edit mode mana chooser
+                eventManager.on('tap', '.edit .mana li', function(e){
+                    e.preventDefault();
+                    var color = $(e.target).data('color');
+                    $(this).toggleClass('selected');
+                    _this.selectColor(color);
+                    _this.setColors();
+                    e.stopPropagation();
+                });
+
+                // edit mode player name
+                eventManager.on('tap', '.edit input', function(e){
+                    e.preventDefault();
+
+                    e.stopPropagation();
+                });
+
+                // counter events
+                eventManager.on('drag', '.dashboard .count', function(e){
+                    var xpos = e.gesture.center.pageX;
+
+                    didSwipe = true;
+                    swipeDirection = (xpos - this.xpos > 0) ? "right" : "left";
+
+                    /*
+                    if (xpos - this.xpos > 0) {
+                        direction = "right";
+                    } else {
+                        direction = "left";
+                    }
+                    */
+
+
+                    this.xpos = xpos;
+
+                });
+
+                setInterval(function () {
+                    if (didSwipe) {
+                        didSwipe = false;
+
+                        _this.updateCounter(swipeDirection);
+                    }
+                }, 1000 / this.options.fps);
+
+
+                eventManager.on('tap', '.dashboard .count', function(e){
+                    var xpos = e.gesture.center.pageX;
+                    var width = $(this).width();
+
+                        if (xpos < (width / 2)) {
+                            _this.updateCounter("left");
+                        } else {
+                            _this.updateCounter("right");
+                        }
+                });
+
+                /* native events
                 this.$togglePanels.on('touchstart', function(e){
                     e.stopPropagation();
                     e.preventDefault();
@@ -44,8 +123,9 @@ $(document).ready(function(){
                     _this.$editPanel.toggle();
                     _this.$dashboardPanel.toggle();
                 });
+
                 this.$colorSelector.on('touchstart', function(e){
-                    event.stopPropagation();
+                    e.stopPropagation();
                     e.preventDefault();
 
                     var color = $(e.target).data('color');
@@ -78,17 +158,23 @@ $(document).ready(function(){
                             _this.updateCounter("right");
                         }
                 });
+                */
             },
 
             updateCounter: function(direction) {
-                    switch (direction) {
-                        case "left":
-                            this.$counter.text(parseInt(this.$counter.text()) - 1);
-                            break;
-                        case "right":
-                            this.$counter.text(parseInt(this.$counter.text()) + 1);
-                            break;
-                    }
+                var value = this.counter;
+
+                switch (direction) {
+                    case "left":
+                        value--;
+                        break;
+                    case "right":
+                        value++;
+                        break;
+                }
+
+                this.$counter.text(value);
+                this.counter = value;
             },
 
             selectColor: function(color) {
@@ -113,7 +199,7 @@ $(document).ready(function(){
                 }
 
                 // sort array by name
-                this.colors.sort();
+                //this.colors.sort();
 
             },
 

@@ -21,7 +21,6 @@ textarea {
 * {
     -moz-box-sizing: border-box;
     box-sizing: border-box;
-    -webkit-user-select: none; /* Disable selection/Copy of UIWebView */
 }
 
 body {

@@ -104,6 +104,8 @@
     top: 100px;
     width: 100%;
     text-align: center;
+    -webkit-user-select: none; /* Disable selection/Copy of UIWebView */
+
 }
 
 
@@ -121,9 +123,25 @@
     margin: 0;
     padding: 0;
 }
+
+.edit form {
+    margin-bottom: 20px;
+}
+.edit form input {
+    width: 75%;
+    height: 50px;
+    border: 1px solid #ccc;
+    border-radius: 0;
+    font-family: "Heroic Condensed";
+    font-size: 36px;
+    line-height: 50px;
+    text-transform: uppercase;
+    background: transparent;
+    -webkit-appearance: none;
+}
 .edit .button {
     position: absolute;
-    right: 20px;
+    right: 15px;
     top: 15px;
     width: 48px;
     height: 48px;
@@ -168,4 +186,10 @@
 .withColors .button {
     border-color: rgba(255,255,255,0.8);
     color: rgba(255,255,255,0.8);
+}
+
+
+/* Splash screen */
+#splash {
+    display: none;
 }

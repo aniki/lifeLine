@@ -8,11 +8,11 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <title>LifeLine</title>
         <meta name="description" content="">
-        <meta name="viewport" content="width=device-width">
         <meta name="viewport" content="width=device-width, user-scalable=no" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
 
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+        <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/fonts.css">
@@ -28,7 +28,15 @@
         <![endif]-->
 
         <!-- Add your site or application content here -->
+
         <section id="plane">
+
+            <section id="splash">
+
+                <a class="button one" href=""><span>Player One</span></a>
+                <a class="button two" href=""><span>Player Two</span></a>
+
+            </section>
 
             <section id="player1" class="player initial">
 
@@ -56,6 +64,12 @@
 
                 <section class="edit">
                     <a class="button toggle" href=""><span>&times;</span></a>
+
+                    <h1>Enter Player Name</h1>
+
+                    <form action="">
+                        <input type="text" id="playerName" name="playerName" placeholder="Player One" />
+                    </form>
 
                     <h1>Select Deck colors</h1>
                     <ul class="mana">
@@ -115,7 +129,7 @@
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
-        <script src="js/vendor/underscore-min.js"></script>
+        <script src="js/vendor/jquery.hammer.min.js"></script>
         <script src="js/plugins.js"></script>
         <script src="js/main.js"></script>
 
