@@ -83,7 +83,6 @@ $(document).ready(function(){
                     swipeDirection = (xpos - this.xpos > 0) ? "right" : "left";
 
                     this.xpos = xpos;
-
                 });
 
                 setInterval(function () {
@@ -106,7 +105,15 @@ $(document).ready(function(){
                         }
                 });
 
-                /* native events
+                eventManager.on('change', '.edit input', function(e){
+                    $('.dashboard .name').text($(this).val());
+                });
+
+                eventManager.on('focusin', '.edit input', function(e){
+                    $(this).val('');
+                });
+
+                /* native event management
                 this.$togglePanels.on('touchstart', function(e){
                     e.stopPropagation();
                     e.preventDefault();
@@ -191,7 +198,6 @@ $(document).ready(function(){
 
                 // sort array by name
                 //this.colors.sort();
-
             },
 
             getColorHexaByName: function(colorName) {
@@ -206,10 +212,11 @@ $(document).ready(function(){
 
                 if (this.colors.length == 0) {
                     cssValue = this.initialBackgroundCssValue;
-                    this.el.toggleClass('initial');
+                    this.el.addClass('initial');
                 } else if (this.colors.length == 1) {
                     var color = this.getColorHexaByName(this.colors[0]);
                     cssValue += color + ' 0%,' + this.getColorLuminance(color, this.options.hue)+ ' 100%)';
+                    this.el.removeClass('initial');
                 } else {
                     numberOfColors = this.colors.length - 1;
                     amplitude = 100 / numberOfColors;
@@ -221,6 +228,7 @@ $(document).ready(function(){
                         }
                     }
                     cssValue += ')';
+                    this.el.removeClass('initial');
                 }
 
                 if (this.colors.length > 0) {

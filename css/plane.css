@@ -138,6 +138,9 @@
     text-transform: uppercase;
     background: transparent;
     -webkit-appearance: none;
+    padding: 0;
+    padding-left: 5px;
+    color: white;
 }
 .edit .button {
     position: absolute;
@@ -169,6 +172,10 @@
 
 
 /* Player Themes */
+
+.player.initial .edit input {
+    color: #333;
+}
 
 #player1.initial {
 }
