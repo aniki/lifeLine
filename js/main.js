@@ -14,7 +14,7 @@ $(document).ready(function(){
             options: {
                 hue : "1.5",
                 counter : 20,
-                fps : 15
+                fps : 10
             },
 
             init: function() {
@@ -81,15 +81,6 @@ $(document).ready(function(){
 
                     didSwipe = true;
                     swipeDirection = (xpos - this.xpos > 0) ? "right" : "left";
-
-                    /*
-                    if (xpos - this.xpos > 0) {
-                        direction = "right";
-                    } else {
-                        direction = "left";
-                    }
-                    */
-
 
                     this.xpos = xpos;
 
