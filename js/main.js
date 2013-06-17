@@ -24,6 +24,7 @@ $(document).ready(function(){
                 this.initialBackgroundCssValue = this.el.css('background');
 
                 this.setElements();
+                //this.initStoredValues();
                 this.setEvents();
             },
 
@@ -34,8 +35,18 @@ $(document).ready(function(){
                 this.$editNameInput = this.el.find('.edit input');
                 this.$togglePanels = this.el.find('.toggle');
                 this.$colorSelector = this.el.find('.edit .mana li');
-                this.$nameLabel = this.el.find('.dashboard header .label');
+                this.$name = this.el.find('.dashboard .label .name');
                 this.$counter = this.el.find('.count .number');
+            },
+
+            initStoredValues: function() {
+                var name = this.store('name'),
+                    counter = this.store('counter'),
+                    colors = this.store('colors');
+
+                if(name){ this.$name.text(name); }
+                if(counter){ this.$counter.text(counter); }
+                if(colors){ this.colors = colors.split('|'); this.setColors(); }
             },
 
             setEvents: function() {
@@ -106,7 +117,9 @@ $(document).ready(function(){
                 });
 
                 eventManager.on('change', '.edit input', function(e){
-                    $('.dashboard .name').text($(this).val());
+                    value = $(this).val();
+                    _this.el.find('.dashboard .name').text(value);
+                    _this.store('name', value);
                 });
 
                 eventManager.on('focusin', '.edit input', function(e){
@@ -196,6 +209,9 @@ $(document).ready(function(){
                     this.$dashboardMana.find('.' + color).show();
                 }
 
+                // store colors in localStorage
+                this.store('colors', this.colors.join('|'));
+
                 // sort array by name
                 //this.colors.sort();
             },
@@ -259,6 +275,21 @@ $(document).ready(function(){
                     rgb += ("00"+c).substr(c.length);
                 }
                 return rgb;
+            },
+
+            store: function(key, value) {
+                var val = '';
+
+                if (!value) {
+                    val = localStorage.getItem(key);
+
+                    return val;
+
+                } else {
+                    localStorage.setItem(key, value);
+
+                    return true;
+                }
             }
         }
     }
