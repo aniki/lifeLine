@@ -84,6 +84,7 @@
 }
 .dashboard header .name {
     font-weight: 100;
+    display: block;
 }
 .dashboard header .colors {
     float: right;
@@ -101,7 +102,7 @@
 
 .dashboard .count {
     position: absolute;
-    top: 100px;
+    top: 40%;
     width: 100%;
     text-align: center;
     -webkit-user-select: none; /* Disable selection/Copy of UIWebView */
