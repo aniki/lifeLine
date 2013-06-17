@@ -3,13 +3,13 @@
 
 # TEAM
 
-    <name> -- <role> -- <twitter>
+    Raphaël Nanni -- Developper -- @raphaelnanni
 
 # THANKS
 
-    <name>
+    Damien Berseron for the concept idea
 
 # TECHNOLOGY COLOPHON
 
     HTML5, CSS3
-    Normalize.css, jQuery, Modernizr
+    Normalize.css, jQuery, Modernizr, Hammer.js, Underscore.js
