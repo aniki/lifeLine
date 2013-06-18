@@ -23,6 +23,7 @@ $(document).ready(function(){
                 this.colors = [];
                 this.counter = this.options.counter;
                 this.initialBackgroundCssValue = this.el.css('background');
+                this.inverted = (this.el.css('content') == 'i') ? true : false ;
 
                 this.setElements();
                 this.initStoredValues();
@@ -42,7 +43,7 @@ $(document).ready(function(){
                     colors = this.store('colors');
 
                 if(name){ this.$name.text(name); }
-                if(counter){ this.$counter.text(counter); }
+                if(counter){ this.$counter.text(counter); this.counter = counter; }
                 if(colors){ this.colors = colors.split('|'); this.setColors(); }
             },
 
@@ -88,7 +89,12 @@ $(document).ready(function(){
                     var xpos = e.gesture.center.pageX;
 
                     didSwipe = true;
-                    swipeDirection = (xpos - this.xpos > 0) ? "right" : "left";
+
+                    if (xpos - this.xpos > 0) {
+                        swipeDirection = (_this.inverted) ? "left" : "right";
+                    } else {
+                        swipeDirection = (_this.inverted) ? "right" : "left";
+                    }
 
                     this.xpos = xpos;
                 });
@@ -107,9 +113,9 @@ $(document).ready(function(){
                     var width = $(this).width();
 
                         if (xpos < (width / 2)) {
-                            _this.updateCounter("left");
+                            _this.updateCounter((_this.inverted) ? "right" : "left");
                         } else {
-                            _this.updateCounter("right");
+                            _this.updateCounter((_this.inverted) ? "left" : "right");
                         }
                 });
 

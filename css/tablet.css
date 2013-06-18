@@ -3,6 +3,7 @@
     /* Plane Layout */
     #player1 {
         bottom: 50%;
+        content: 'i';
     }
     #player1 .dashboard {
         -webkit-transform: rotate(180deg);
