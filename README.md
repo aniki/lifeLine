@@ -6,9 +6,12 @@ It's specifically designed and optimised for use on mobile devices such as iPad 
 
 ## Features
 
-* Swipe and tap enabled points counter
-* Player name
+* Swipe and tap-enabled points counter
+* Player name editing
 * Deck color chooser
+* 1 player mode on mobile
+* 2 players mode on tablet
+* localStorage enabled
 
 ## Demo
 

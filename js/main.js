@@ -19,12 +19,13 @@ $(document).ready(function(){
 
             init: function() {
                 this.el = $(element);
+                this.player = this.el.attr('id');
                 this.colors = [];
                 this.counter = this.options.counter;
                 this.initialBackgroundCssValue = this.el.css('background');
 
                 this.setElements();
-                //this.initStoredValues();
+                this.initStoredValues();
                 this.setEvents();
             },
 
@@ -278,17 +279,18 @@ $(document).ready(function(){
             },
 
             store: function(key, value) {
-                var val = '';
+                var obj = JSON.parse(localStorage.getItem(this.player)) || {};
 
                 if (!value) {
-                    val = localStorage.getItem(key);
-
-                    return val;
-
+                    return obj[key];
                 } else {
-                    localStorage.setItem(key, value);
-
-                    return true;
+                    if (value == "/cc") {
+                        localStorage.clear();
+                    } else {
+                        obj[key] = value;
+                        localStorage.setItem(this.player, JSON.stringify(obj));
+                        return true;
+                    }
                 }
             }
         }
