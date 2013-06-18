@@ -92,12 +92,15 @@
     height: 60px;
     line-height: 60px;
 }
-.dashboard header .colors li {
+.dashboard header .mana li {
     float: right;
     color: white;
 }
 .dashboard .mana li {
     display: none;
+}
+.dashboard .mana li.selected {
+    display: block;
 }
 
 .dashboard .count {

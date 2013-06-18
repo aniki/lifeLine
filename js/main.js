@@ -31,11 +31,7 @@ $(document).ready(function(){
 
             setElements: function() {
                 this.$dashboardPanel = this.el.find('.dashboard');
-                this.$dashboardMana = this.$dashboardPanel.find('.mana');
                 this.$editPanel = this.el.find('.edit');
-                this.$editNameInput = this.el.find('.edit input');
-                this.$togglePanels = this.el.find('.toggle');
-                this.$colorSelector = this.el.find('.edit .mana li');
                 this.$name = this.el.find('.dashboard .label .name');
                 this.$counter = this.el.find('.count .number');
             },
@@ -127,50 +123,6 @@ $(document).ready(function(){
                     $(this).val('');
                 });
 
-                /* native event management
-                this.$togglePanels.on('touchstart', function(e){
-                    e.stopPropagation();
-                    e.preventDefault();
-
-                    _this.$editPanel.toggle();
-                    _this.$dashboardPanel.toggle();
-                });
-
-                this.$colorSelector.on('touchstart', function(e){
-                    e.stopPropagation();
-                    e.preventDefault();
-
-                    var color = $(e.target).data('color');
-                    $(this).toggleClass('selected');
-                    _this.selectColor(color);
-                    _this.setColors();
-                });
-
-                this.el.find('.count').on('touchmove', function(e){
-                    var xpos = e.originalEvent.touches[0].pageX,
-                        direction = "";
-
-                    if (xpos - this.xpos > 0) {
-                        direction = "right";
-                    } else {
-                        direction = "left";
-                    }
-
-                    _this.updateCounter(direction);
-
-                    this.xpos = xpos;
-
-                }).on('touchstart', function(e){
-                    var xpos = e.originalEvent.touches[0].pageX;
-                    var width = $(this).width();
-
-                        if (xpos < (width / 2)) {
-                            _this.updateCounter("left");
-                        } else {
-                            _this.updateCounter("right");
-                        }
-                });
-                */
             },
 
             updateCounter: function(direction) {
@@ -187,6 +139,7 @@ $(document).ready(function(){
 
                 this.$counter.text(value);
                 this.counter = value;
+                this.store('counter', value);
             },
 
             selectColor: function(color) {
@@ -204,10 +157,8 @@ $(document).ready(function(){
                 // toggle value in colors array
                 if (registered == true) {
                     this.colors.remove(id);
-                    this.$dashboardMana.find('.' + color).hide();
                 } else {
                     this.colors.push(color);
-                    this.$dashboardMana.find('.' + color).show();
                 }
 
                 // store colors in localStorage
@@ -225,7 +176,10 @@ $(document).ready(function(){
             setColors: function() {
                 var cssParams = [],
                     i = 0,
+                    manaSelector = '.mana',
                     cssValue = '-webkit-linear-gradient(-45deg, ';
+
+                this.el.find('.mana li').removeClass('selected');
 
                 if (this.colors.length == 0) {
                     cssValue = this.initialBackgroundCssValue;
@@ -234,15 +188,18 @@ $(document).ready(function(){
                     var color = this.getColorHexaByName(this.colors[0]);
                     cssValue += color + ' 0%,' + this.getColorLuminance(color, this.options.hue)+ ' 100%)';
                     this.el.removeClass('initial');
+                    this.el.find(manaSelector + ' .' + this.colors[0]).addClass('selected');
                 } else {
                     numberOfColors = this.colors.length - 1;
                     amplitude = 100 / numberOfColors;
+
 
                     for(i=0;i<=numberOfColors;i++) {
                         cssValue += this.getColorHexaByName(this.colors[i]) + ' ' + (i * amplitude) + '%';
                         if (i < numberOfColors) {
                             cssValue += ', ';
                         }
+                        this.el.find(manaSelector + ' .' + this.colors[i]).addClass('selected');
                     }
                     cssValue += ')';
                     this.el.removeClass('initial');
