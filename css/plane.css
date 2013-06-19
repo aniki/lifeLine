@@ -185,8 +185,20 @@
 
 #player2.initial {
     background: #333;
-    color: #999999;
+    color: #999;
 }
+
+#player2.initial .edit .button {
+    color: #999;
+    border-color: #999;
+}
+#player2.initial .edit input {
+    color: #999;
+}
+#player2.initial .mana li {
+    color: rgba(255,255,255,0.5);
+}
+
 
 .withColors {
     color: rgba(255,255,255,0.8);
