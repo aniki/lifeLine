@@ -35,6 +35,7 @@ $(document).ready(function(){
                 this.$editPanel = this.el.find('.edit');
                 this.$name = this.el.find('.dashboard .label .name');
                 this.$counter = this.el.find('.count .number');
+                this.$editForm = this.el.find('.edit form');
             },
 
             initStoredValues: function() {
@@ -129,6 +130,10 @@ $(document).ready(function(){
                     $(this).val('');
                 });
 
+                this.$editForm.on('submit', function(e){
+                    e.preventDefault();
+                });
+
             },
 
             updateCounter: function(direction) {
@@ -166,6 +171,8 @@ $(document).ready(function(){
                 } else {
                     this.colors.push(color);
                 }
+
+                console.log(this.colors);
 
                 // store colors in localStorage
                 this.store('colors', this.colors.join('|'));
