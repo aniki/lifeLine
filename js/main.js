@@ -251,7 +251,7 @@ $(document).ready(function(){
             store: function(key, value) {
                 var obj = JSON.parse(localStorage.getItem(this.player)) || {};
 
-                if (!value) {
+                if (value === undefined) {
                     return obj[key];
                 } else {
                     if (value == "/cc") {
