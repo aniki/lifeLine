@@ -1,4 +1,4 @@
-@media screen and (min-width: 321px) {
+@media screen and (min-width: 321px) and (orientation: portrait) {
 
     /* Plane Layout */
     #player1 {
@@ -14,5 +14,26 @@
     #player2 {
         top: 50%;
         bottom: 0;
+    }
+}
+
+@media screen and (min-width: 641px) and (orientation: landscape) {
+
+    /* Plane Layout */
+    #player1 {
+        right: 50%;
+    }
+    #player1 .dashboard {
+        height: 100%;
+    }
+
+    #player2 {
+        left: 50%;
+    }
+
+    .dashboard header {
+        padding: 25px 30px;
+        font-size: 48px;
+        line-height: 48px;
     }
 }
