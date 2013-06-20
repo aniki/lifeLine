@@ -68,6 +68,11 @@ $(document).ready(function(){
                     e.stopPropagation();
                 });
 
+                eventManager.on('click', '.toggle', function(e){
+                    e.preventDefault();
+                    e.stopPropagation();
+                });
+
                 // edit mode mana chooser
                 eventManager.on('tap', '.edit .mana li', function(e){
                     e.preventDefault();
