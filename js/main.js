@@ -14,7 +14,8 @@ $(document).ready(function(){
             options: {
                 hue : "1.5",
                 counter : 20,
-                fps : 10
+                fps : 10,
+                appCacheConfirm: 'A new version of this application is available. Load it?'
             },
 
             init: function() {
@@ -56,6 +57,11 @@ $(document).ready(function(){
                 document.ontouchmove = function(event) {
                     event.preventDefault();
                 }
+
+                window.addEventListener('load', function(e) {
+                    // appCache management
+                    _this.cache('update');
+                }, false);
 
                 // event management with Hammer.js
                 var eventManager = this.el.hammer();
@@ -177,8 +183,6 @@ $(document).ready(function(){
                     this.colors.push(color);
                 }
 
-                console.log(this.colors);
-
                 // store colors in localStorage
                 this.store('colors', this.colors.join('|'));
 
@@ -253,6 +257,7 @@ $(document).ready(function(){
                 return rgb;
             },
 
+            // LocalStorage managment
             store: function(key, value) {
                 var obj = JSON.parse(localStorage.getItem(this.player)) || {};
 
@@ -267,6 +272,37 @@ $(document).ready(function(){
                         return true;
                     }
                 }
+            },
+
+            // Application cache management
+            cache : function(action) {
+                var _this = this;
+                var appCache = window.applicationCache;
+
+                if (action == "update") {
+
+                    // appCache update handling (code snippet from html5rocks.com)
+                    window.applicationCache.addEventListener('updateready', function(e) {
+                    if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
+                        // Browser downloaded a new app cache.
+                        // Swap it in and reload the page to get the new hotness.
+                        window.applicationCache.swapCache();
+                        if (confirm(_this.options.appCacheConfirm)) {
+                            window.location.reload();
+                        }
+                    } else {
+                      // Manifest didn't changed. Nothing new to server.
+                    }
+                  }, false);
+                }
+            },
+
+            handleCacheEvent : function(e) {
+                // not used for now...
+            },
+
+            handleCacheEvent: function(e) {
+                // not used for now...
             }
         }
     }

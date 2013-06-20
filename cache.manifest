@@ -1,0 +1,65 @@
+CACHE MANIFEST
+# 2013-06-20:v1.0
+
+# Explicitly cached 'master entries'.
+CACHE:
+
+# documents
+/index.html
+
+# favicons
+/favicon.ico
+/apple-touch-icon.png
+/apple-touch-icon-57x57-precomposed.png
+/apple-touch-icon-72x72-precomposed.png
+/apple-touch-icon-114x114-precomposed.png
+/apple-touch-icon-144x144-precomposed.png
+/apple-touch-icon-precomposed.png
+
+# font files
+/css/fonts/heroiccondensed-light-webfont.eot
+/css/fonts/heroiccondensed-light-webfont.svg
+/css/fonts/heroiccondensed-light-webfont.ttf
+/css/fonts/heroiccondensed-light-webfont.woff
+/css/fonts/heroiccondensed-regular-webfont.eot
+/css/fonts/heroiccondensed-regular-webfont.svg
+/css/fonts/heroiccondensed-regular-webfont.ttf
+/css/fonts/heroiccondensed-regular-webfont.woff
+/css/fonts/heroiccondensed-thin-webfont.eot
+/css/fonts/heroiccondensed-thin-webfont.svg
+/css/fonts/heroiccondensed-thin-webfont.ttf
+/css/fonts/heroiccondensed-thin-webfont.woff
+/css/fonts/magicsymbols-webfont.eot
+/css/fonts/magicsymbols-webfont.svg
+/css/fonts/magicsymbols-webfont.ttf
+/css/fonts/magicsymbols-webfont.woff
+
+# stylesheets
+/css/fonts.css
+/css/main.css
+/css/mobile.css
+/css/normalize.css
+/css/plane.css
+/css/tablet.css
+
+# scripts
+/js/vendor/jquery.hammer.min.js
+/js/vendor/jquery-1.9.1.min.js
+/js/vendor/modernizr-2.6.2.min.js
+/js/vendor/underscore-min.js
+/js/main.js
+/js/plugins.js
+
+
+# Resources that require the user to be online.
+NETWORK:
+*
+
+
+# static.html will be served if main.py is inaccessible
+# offline.jpg will be served in place of all images in images/large/
+# offline.html will be served in place of all other .html files
+FALLBACK:
+#/main.py /static.html
+#images/large/ images/offline.jpg
+*.html /404.html
