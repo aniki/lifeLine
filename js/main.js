@@ -24,10 +24,11 @@ $(document).ready(function(){
                 this.colors = [];
                 this.counter = this.options.counter;
                 this.initialBackgroundCssValue = this.el.css('background');
-                this.inverted = (this.el.css('content') == 'i') ? true : false ;
+
 
                 this.setElements();
                 this.initStoredValues();
+                this.detectInversion();
                 this.setEvents();
             },
 
@@ -49,6 +50,10 @@ $(document).ready(function(){
                 if(colors){ this.colors = colors.split('|'); this.setColors(); }
             },
 
+            detectInversion: function() {
+                this.inverted = (this.el.css('content') == 'i') ? true : false ;
+            },
+
             setEvents: function() {
                 var _this = this;
                 var didSwipe = false,
@@ -61,6 +66,12 @@ $(document).ready(function(){
                 window.addEventListener('load', function(e) {
                     // appCache management
                     _this.cache('update');
+                }, false);
+
+                window.addEventListener("orientationchange", function() {
+                	// Announce the new orientation change
+                	console.log(window.orientation);
+                    _this.detectInversion();
                 }, false);
 
                 // event management with Hammer.js
