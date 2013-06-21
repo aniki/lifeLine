@@ -13,8 +13,9 @@ $(document).ready(function(){
         this.app = {
             options: {
                 hue : "1.5",
-                counter : 20,
+                startingScore : 20,
                 fps : 10,
+                tickerInterval: 3000,
                 appCacheConfirm: 'A new version of this application is available. Load it?'
             },
 
@@ -22,9 +23,11 @@ $(document).ready(function(){
                 this.el = $(element);
                 this.player = this.el.attr('id');
                 this.colors = [];
-                this.counter = this.options.counter;
+                this.score = this.options.startingScore;
+                this.timer = 3000;
+                this.history = [];
+                this.scoreDelta = 0;
                 this.initialBackgroundCssValue = this.el.css('background');
-
 
                 this.setElements();
                 this.initStoredValues();
@@ -42,12 +45,14 @@ $(document).ready(function(){
 
             initStoredValues: function() {
                 var name = this.store('name'),
-                    counter = this.store('counter'),
-                    colors = this.store('colors');
+                    score = this.store('score'),
+                    colors = this.store('colors'),
+                    history = this.store('history');
 
                 if(name){ this.$name.text(name); }
-                if(counter){ this.$counter.text(counter); this.counter = counter; }
+                if(score){ this.$counter.text(score); this.score = score; }
                 if(colors){ this.colors = colors.split('|'); this.setColors(); }
+                if(history){ this.history = history.split('|'); }
             },
 
             detectInversion: function() {
@@ -70,9 +75,13 @@ $(document).ready(function(){
 
                 window.addEventListener("orientationchange", function() {
                 	// Announce the new orientation change
-                	console.log(window.orientation);
                     _this.detectInversion();
                 }, false);
+
+                // ticker event
+                this.el.on('tick', function(e){
+                    _this.registerScore();
+                });
 
                 // event management with Hammer.js
                 var eventManager = this.el.hammer();
@@ -127,19 +136,23 @@ $(document).ready(function(){
                         didSwipe = false;
 
                         _this.updateCounter(swipeDirection);
+                        _this.ticker();
+
                     }
                 }, 1000 / this.options.fps);
 
 
                 eventManager.on('tap', '.dashboard .count', function(e){
-                    var xpos = e.gesture.center.pageX;
+                    var xpos = e.gesture.center.pageX - _this.el.offset().left;
                     var width = $(this).width();
 
-                        if (xpos < (width / 2)) {
-                            _this.updateCounter((_this.inverted) ? "right" : "left");
-                        } else {
-                            _this.updateCounter((_this.inverted) ? "left" : "right");
-                        }
+                    if (xpos < (width / 2)) {
+                        _this.updateCounter((_this.inverted) ? "right" : "left");
+                    } else {
+                        _this.updateCounter((_this.inverted) ? "left" : "right");
+                    }
+
+                    _this.ticker();
                 });
 
                 eventManager.on('change', '.edit input', function(e){
@@ -155,24 +168,46 @@ $(document).ready(function(){
                 this.$editForm.on('submit', function(e){
                     e.preventDefault();
                 });
+            },
 
+            ticker: function() {
+                _this = this;
+
+                if(this.clock) {
+                    clearTimeout(this.clock);
+                }
+                this.clock = setTimeout(function(){
+                    _this.el.trigger('tick');
+                }, this.options.tickerInterval);
             },
 
             updateCounter: function(direction) {
-                var value = this.counter;
+                var value = this.score,
+                    scoreDelta = this.scoreDelta;
 
                 switch (direction) {
                     case "left":
                         value--;
+                        scoreDelta--;
                         break;
                     case "right":
                         value++;
+                        scoreDelta++;
                         break;
                 }
 
                 this.$counter.text(value);
-                this.counter = value;
-                this.store('counter', value);
+                this.score = value;
+                this.scoreDelta = scoreDelta;
+                this.store('score', value);
+            },
+
+            registerScore: function() {
+                var variation = (this.scoreDelta > 0) ? '+' + this.scoreDelta : this.scoreDelta;
+
+                this.history.push(this.score + '/' + variation);
+                this.store('history', this.history.join('|'));
+                this.scoreDelta = 0;
             },
 
             selectColor: function(color) {
