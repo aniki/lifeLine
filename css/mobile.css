@@ -42,6 +42,36 @@
     .dashboard header .colors li {
     }
 
+
+    .edit .mana {
+        position: relative;
+        font-size: 42px;
+        top: 1em;
+        width: 3.5em;
+        height: 3.5em;
+        border-radius: 1.75em;
+        margin: auto;
+        -webkit-transform: rotate(-18deg);
+    }
+    .edit .mana li {
+        position: absolute;
+        width: 1em;
+        height: 1em;
+        top: 50%;
+        left: 50%;
+        opacity: 0.5;
+        color: black;
+        line-height: 1em;
+        font-size: 1.5em;
+        margin-top: -0.5em;
+        margin-left: -0.5em;
+        border-radius: 0.5em;
+        border: 3px solid black;
+
+        cursor: pointer;
+    }
+
+
     .dashboard .count {
         top: 150px;
     }

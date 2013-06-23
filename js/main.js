@@ -15,12 +15,13 @@ $(document).ready(function(){
                 hue : "1.5",
                 startingScore : 20,
                 fps : 10,
-                tickerInterval: 3000,
+                tickerInterval: 2000,
                 appCacheConfirm: 'A new version of this application is available. Load it?'
             },
 
             init: function() {
                 this.el = $(element);
+                this.el.data({player: this});
                 this.player = this.el.attr('id');
                 this.colors = [];
                 this.score = this.options.startingScore;
@@ -31,6 +32,7 @@ $(document).ready(function(){
 
                 this.setElements();
                 this.initStoredValues();
+                this.initManaPosition();
                 this.detectInversion();
                 this.setEvents();
             },
@@ -38,9 +40,33 @@ $(document).ready(function(){
             setElements: function() {
                 this.$dashboardPanel = this.el.find('.dashboard');
                 this.$editPanel = this.el.find('.edit');
+                this.$editMana = this.el.find('.edit .mana li');
                 this.$name = this.el.find('.dashboard .label .name');
                 this.$counter = this.el.find('.count .number');
                 this.$editForm = this.el.find('.edit form');
+            },
+
+            initManaPosition: function() {
+                var number = this.$editMana.length;
+                var angle = 360 / this.$editMana.length;
+                var i, css;
+
+                /*
+                for (i=0; i<number; i++) {
+                    var elemAngle = angle * i;
+                    css = 'rotate(' + angle * (i+1) + 'deg) translate(3em) rotate(-' + angle * (i+1) + 'deg);';
+                    $(this.$editMana[i-1]).css('transform', 'rotate(' + elemAngle + 'deg) translate(3em) rotate(-' + elemAngle + 'deg)');
+                }
+                */
+
+                $.each(this.$editMana, function(index, value){
+                    var elem = $(value),
+                        elemAngle = angle * index,
+                        elemAngle2 = (elemAngle - 18) * -1,
+                        radius = elem.parent().css('border-radius');
+
+                    elem.css('transform', 'rotate(' + elemAngle + 'deg) translate(' + radius + ') rotate(' + elemAngle2 + 'deg)');
+                });
             },
 
             initStoredValues: function() {
@@ -79,8 +105,9 @@ $(document).ready(function(){
                 }, false);
 
                 // ticker event
-                this.el.on('tick', function(e){
-                    _this.registerScore();
+                this.el.on('tick', function(e, player){
+                    console.log('tick ' + player.player)
+                    player.registerScore(player);
                 });
 
                 // event management with Hammer.js
@@ -172,12 +199,16 @@ $(document).ready(function(){
 
             ticker: function() {
                 _this = this;
+                var player = this.player;
 
-                if(this.clock) {
+                if (this.clock) {
                     clearTimeout(this.clock);
                 }
                 this.clock = setTimeout(function(){
-                    _this.el.trigger('tick');
+                    (function(p){
+                        console.log('trig ' + p.player);
+                        p.el.trigger('tick', [p]);
+                    })(_this);
                 }, this.options.tickerInterval);
             },
 
@@ -202,12 +233,18 @@ $(document).ready(function(){
                 this.store('score', value);
             },
 
-            registerScore: function() {
-                var variation = (this.scoreDelta > 0) ? '+' + this.scoreDelta : this.scoreDelta;
+            registerScore: function(player) {
+                var variation = (player.scoreDelta > 0) ? '+' + player.scoreDelta : player.scoreDelta;
+                //var history = $('#' + player).data().player.history;
 
-                this.history.push(this.score + '/' + variation);
-                this.store('history', this.history.join('|'));
-                this.scoreDelta = 0;
+                history = player.history;
+                console.log(player.player, history);
+
+                history.push(player.score + '/' + variation);
+                player.store('history', history.join('|'), player);
+                player.scoreDelta = 0;
+
+                console.log(history);
             },
 
             selectColor: function(color) {
@@ -304,8 +341,9 @@ $(document).ready(function(){
             },
 
             // LocalStorage managment
-            store: function(key, value) {
+            store: function(key, value, target) {
                 var obj = JSON.parse(localStorage.getItem(this.player)) || {};
+                var t;
 
                 if (value === undefined) {
                     return obj[key];
@@ -314,7 +352,13 @@ $(document).ready(function(){
                         localStorage.clear();
                     } else {
                         obj[key] = value;
-                        localStorage.setItem(this.player, JSON.stringify(obj));
+                        if (target === undefined) {
+                            t = this.player;
+                        } else {
+                            t = target;
+                        }
+                        //console.log(t + ' ' + key + ' ' + value);
+                        localStorage.setItem(t, JSON.stringify(obj));
                         return true;
                     }
                 }
@@ -328,11 +372,11 @@ $(document).ready(function(){
                 if (action == "update") {
 
                     // appCache update handling (code snippet from html5rocks.com)
-                    window.applicationCache.addEventListener('updateready', function(e) {
-                    if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
+                    appCache.addEventListener('updateready', function(e) {
+                    if (appCache.status == appCache.UPDATEREADY) {
                         // Browser downloaded a new app cache.
                         // Swap it in and reload the page to get the new hotness.
-                        window.applicationCache.swapCache();
+                        appCache.swapCache();
                         if (confirm(_this.options.appCacheConfirm)) {
                             window.location.reload();
                         }
